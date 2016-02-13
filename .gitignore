@@ -1,0 +1,5 @@
+.env/
+*.pyc
+constraints.py
+bower_components/
+post_data/

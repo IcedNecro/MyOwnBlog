@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html ng-app='adminApp'>
+<head>
+	<title></title>
+	<script type="text/javascript" src='{{url_for("bower.static", filename="bower-angularjs/angular.min.js")}}'></script>
+	<script type="text/javascript" src='{{url_for("bower.static", filename="ng-file-upload/ng-file-upload.min.js")}}'></script>
+	<script type="text/javascript" src='{{url_for("admin.static", filename="js/app.js")}}'></script>
+	<script type="text/javascript" src='{{url_for("admin.static", filename="js/directives.js")}}'></script>
+
+	<link rel="stylesheet" type="text/css" href="{{url_for('admin.static', filename='css/admin.css')}}">
+</head>
+<body>
+<div class="content">
+	<div class="admin-header"></div>
+	{% raw %}
+	<div class="admin-console" ng-controller='adminIndex'>
+		<div class="left-menu">
+			<ul>
+				<li ng-click='setDisplayMode("published")'>Posted posts</li>
+				<li ng-click='setDisplayMode("in_process")'>In process</li>
+				<li>Comments and likes</li>
+				<li>Contact</li>
+			</ul>
+		</div>
+		<div class="section">
+			<div class="posts-section">
+
+				<div class="filter">
+					<label for='filter-title'>Title:</label>
+					<input id='filter-title' />
+					<label for='datepicker'>Date:</label>
+					<input id='datepicker' />
+					<button ng-click="redirectOnPostCreating()">Add new post</button>
+				</div>
+				<p>Recent posts</p>
+
+				<table class="posts-table">
+					<tr class="table-header">
+						<td></td>
+						<td>Post Title</td>
+						<td>Creation Date</td>
+						<td>Update Date</td>
+					</tr>
+					<tr ng-repeat='post in posts' class="usual">
+						<td><input ng-model='post.selected' type="checkbox"></td>
+						<td><a href="{{ '/admin/post/'+post._id }}">{{post.title}}</a></td>
+						<td>{{ (post.create_date*1000) }}</td>
+						<td>{{ (post.last_edit_time*1000) }}</td>
+
+					</tr>
+				</table>
+				<select >
+					<option>----</option>
+					<option>Delete selected</option>
+				</select>
+				<button ng-click='deletePosts()'>Ok</button>
+			</div>
+		</div>
+	</div>
+	{% endraw %}
+</div>
+</body>

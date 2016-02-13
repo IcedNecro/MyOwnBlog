@@ -1,0 +1,6 @@
+flask
+flask-security
+flask-mongoengine
+flask-wtf
+flask-bower
+flask-debugtoolbar

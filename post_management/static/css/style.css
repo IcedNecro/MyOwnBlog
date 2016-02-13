@@ -1,0 +1,135 @@
+body {
+	padding: 0;
+	margin-top: 0;
+	position: relative;
+	font-family: 'Poiret One' cursive;
+}
+
+.main-content-header {
+	position: fixed;
+	background-color: black;
+	color: white;
+	width: 100%;
+	z-index: 100;
+	box-shadow:0 0 10px black ;
+}
+
+#university,
+.banner {
+	z-index: 50;
+	position: relative;
+	height: 100vh;
+	background-image: url(../img/bg.jpg);
+	background-position: 50% 50%; 
+}
+
+.banner img {
+	width: 250px;
+	height: 250px;
+	border-radius: 125px;
+	margin-left:325px;
+	margin-top: 125px; 
+}
+
+.link:hover{
+	border-color: red;
+}
+.top-menu-bar,
+.banner-content {
+	width: 900px;
+	margin: auto;
+}
+.nav-tabs>li>a {
+	border-radius: 0;
+	padding: 20px;
+}
+
+li[role='presentation'] a {
+	width: 100%;
+	height: 100%;
+	color: white;
+	border-color: none;
+	border-radius: 0;
+	transition: 0.2s all;
+	-webkit-transition: 0.2s all;
+	-moz-transition: 0.2s all;
+
+}
+li[role='presentation'] a.active {
+	color: black;
+	border-bottom: 5px solid red;
+	padding-bottom: 5px;
+	transition: 0.2s all;
+	-webkit-transition: 0.2s all;
+	-moz-transition: 0.2s all;
+}	
+
+li[role='presentation'] a:hover {
+	color: black;
+	border-bottom: 15px solid red;
+	padding-bottom: 5px;
+	transition: 0.2s all;
+	-webkit-transition: 0.2s all;
+	-moz-transition: 0.2s all;
+
+} 
+
+li[role='presentation'],
+.menu-tab {
+	text-align:center; 
+}
+.menu-tab:last-child {
+	border-right: 1px solid white;
+}
+
+.banner-row {
+	background-color: #424242;
+	height: 100vh;
+	z-index: 100;
+	box-shadow:0 0 10px black ;
+}
+
+.description,
+.name {
+	font-family: 'Bitter', serif;
+	color: white;
+	width: 100%;
+	font-size: 30px;
+	/*text-align: center;*/
+	text-shadow: 0 0 4px black;
+}
+
+.description {
+	font-size: 20px;
+	font-weight: 400;
+}
+
+#university {
+	background-image: url(../img/background.jpg);
+	z-index:50;
+	position: relative; 
+}
+
+#contact-me {
+	height: 400px;
+}
+#contact-me input {
+	border: none;
+	padding: 10px;
+	color: white;
+	background-color: #242424;
+}
+#contact-me label {
+	margin:7px;
+	width: 100%;
+	text-align: right;
+	color: #afafaf;
+	font-weight: normal;
+	font-style: italic;
+}
+
+footer {
+	background-color: #242424;
+	height: 300px;
+}
+

@@ -1,0 +1,92 @@
+
+	<div class="blogpost-body">
+		<div class="blogpost-banner" style="background-image: url(/feed/images/56a3f9bd1ac44811371b3f0d/banner)">
+			<div class="blogpost-button-left blogpost-button"></div>
+			<div class="blogpost-button-right blogpost-button"></div>
+			<div class="blogpost-header-content">
+				<div class="blogpost-title">
+					<h1 class="blogpost-main-title">{{ post.title }}</h1>
+					<p class="blogpost-publishing-date">{{ post.create_date }}</p>
+					<div class="blogpost-tag-field">
+						<ul>
+							<li ng-repeat='tag in post.tags'>{{ tag }}</li>
+						</ul>
+					</div>
+				</div>
+				<div class="blogpost-short-description">
+						<p>{{ post.short_description }}</p>
+				</div>
+			</div>
+
+		</div>
+		
+	</div>
+	<div class="page-body">
+		<div class="blogpost-content">
+			<div class="article-text">	
+				
+			</div>
+
+			<div class="engagements-section">
+				Did you like it?
+				<button class="g-plus-signin">G+</button>
+				<button class="fb-signin">Facebook</button>
+			</div>
+			<div>
+				<p>Read also:</p>
+				<div class="read-also-section">
+					<div class="read-also-topic">
+						<div class="read-also-topic-photo" style="background-image: url({{url_for('post.static',filename='img/logo.png')}})"></div>
+						<div class="read-also-content">
+							<p class="read-also-topic-header">This is header</p>
+							<p class="read-also-topic-description">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</p>
+						</div>
+					</div>
+					<div class="read-also-topic">
+						<div class="read-also-topic-photo" style="background-image: url({{url_for('post.static',filename='img/bg.jpg')}})"></div>
+						<div class="read-also-content">
+							<p class="read-also-topic-header">This is header</p>
+							<p class="read-also-topic-description">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</p>
+						</div>
+					</div>
+					<div class="read-also-topic">
+						<div class="read-also-topic-photo" style="background-image: url({{url_for('post.static',filename='img/background.jpg')}})"></div>
+						<div class="read-also-content">
+							<p class="read-also-topic-header">This is header</p>
+							<p class="read-also-topic-description">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</p>						
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="feedback-section">
+			<label for='comment-text'>Leave your comment:</label>
+			<textarea id="comment-text" ng-model='comment_text'></textarea>
+			<button ng-click='comment()'>Leave comment</button>
+		</div>
+		<div class="comment-section">
+			<p class="comment-section-header">Comments: 2</p>
+			<div class="comment">
+				<div class='commentor-photo' style="background-image: url(main/img/photo.jpg)"></div>
+				<div class="comment-body">
+					<div class="comment-top-line">
+						<div class="commentor-name">Roman Statkevich<span class='comment-soc-network'> via Facebook</span></div>
+						<div class="comment-date">1 jan 2016</div>
+					</div>
+					<div class="comment-text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</div>
+
+				</div>
+			</div>
+			<div class="comment">
+				<div class='commentor-photo' style="background-image: url(main/img/photo.jpg)"></div>
+				<div class="comment-body">
+					<div class="comment-top-line">
+						<div class="commentor-name">Roman Statkevich<span class='comment-soc-network'> via Facebook</span></div>
+						<div class="comment-date">1 jan 2016</div>
+					</div>
+					<div class="comment-text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</div>
+
+				</div>
+			</div>
+		</div>
+	</div>

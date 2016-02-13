@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html ng-app='adminApp'>
+<head >
+	<title></title>
+	<script type="text/javascript" src='{{url_for("bower.static", filename="jquery/dist/jquery.js")}}'></script>
+	
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/styles/default.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+	<script type="text/javascript" src='{{url_for("bower.static", filename="bower-angularjs/angular.min.js")}}'></script>
+	<script type="text/javascript" src='{{url_for("bower.static", filename="ng-file-upload/ng-file-upload.min.js")}}'></script>
+	<script type="text/javascript" src='{{url_for("bower.static", filename="markdown/lib/markdown.js")}}'></script>
+	<script type="text/javascript">
+
+	</script>
+	<script type="text/javascript" src='{{url_for("admin.static", filename="js/app.js")}}'></script>
+	<link rel="stylesheet" type="text/css" href="{{url_for('admin.static', filename='css/admin.css')}}">
+</head>
+{% if edit_mode == True %}
+<body post='{{id}}' ng-controller='postEditController'>
+{% else %}
+<body ng-controller='postController'>
+{% endif %}
+	<div class="admin-header"><p >Admin</p></div>
+	<div class="admin-console" >
+		<a href="/admin"><< Back</a>
+		<div class="text-edit">
+			<div class="left-half">
+				<div class="row">
+					<label for='new-post-title'>New post title</label>
+					<input ng-model='newPost.title' id='new-post-title' />
+				</div>
+				<div class="row">				
+					<label for='new-post-short'>New post short-description</label>
+					<textarea ng-model='newPost.short_description' id='new-post-short'></textarea>
+				</div>
+				<div class="row">				
+					<label for='new-post-banner'>Select photo for banner</label>
+					<input ngf-select='upload()' ng-model='file' type='file' id='new-post-banner' value=""/>
+				</div>
+				<div class="row">				
+					<label for='new-post-tags'>Select tags</label>
+					<input ng-model='tagName' ng-change='getTags()' id='new-post-tags'/>
+					{% raw %}
+					<div class="proposed-tags">Select from here:<a ng-repeat='tag in notSelected' ng-click='addToSelected(tag)' href="">{{tag}}</a></div>
+					<div class="accepted-tags">Click to remove<a ng-repeat='tag in newPost.tags' ng-click='removeFromSelected(tag)' href="">{{tag}}</a></div>
+					{% endraw %}
+				</div>
+				<div class="row">				
+					<label for='new-post-text'>Text</label>
+					<textarea ng-model='newPost.text' ng-change="refreshMarkdown(newPost.text)" id='new-post-text'></textarea>
+				</div>
+				{% if edit_mode == True %}
+				<button ng-if='newPost.published==false' ng-click='publishPost(true)'>Publish</button>
+				<button ng-if='newPost.published==true' ng-click='publishPost(false)'>Unpublish</button>
+				<button ng-click='updateData()'>Save changes</button>
+				<button ng-click='deletePost()'>Delete</button>
+				{% else %}
+				<button ng-click='sendData()'>Create Post</button>
+				{% endif %}
+			</div>
+			<div class="right-half">
+				<p>Preview</p>
+				<div class="preview"></div>
+			</div>
+		</div>
+	</div>
+</body>
