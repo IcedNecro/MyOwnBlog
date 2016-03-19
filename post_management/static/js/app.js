@@ -69,6 +69,9 @@ app.controller('indexController', ['$http', '$scope','$location',  function($htt
 }])
 
 app.controller('postController', ['$http', '$scope', '$routeParams','social', function($http,$scope, $routeParams, social) {
+	var md = new showdown.Converter()
+	md.setOption('tables', true);
+	
 	$scope.getPost = function() {
 		var id = $routeParams.id;
 
@@ -76,7 +79,7 @@ app.controller('postController', ['$http', '$scope', '$routeParams','social', fu
 			url: '/feed/api/post/'+id,
 			method: 'GET'
 		}).success(function(data) {
-			$('.article-text').append(markdown.toHTML(data.data.text))
+			$('.article-text').append(md.makeHtml(data.data.text))
 			$scope.id = id
 			$scope.post = data.data;
 		})

@@ -50,15 +50,15 @@ def post_manage():
 			order_by = params['order_by']
 		if 'not_published' in params: 
 			filter_by['published'] = False
-
 		q = Post.objects(**filter_by).order_by(order_by)
-		query = map(lambda o: json.loads(o.to_json()),q)
-		for o in query:
-			o['create_date'] = o['create_date']['$date']
-			o['last_edit_time'] = o['last_edit_time']['$date'] if 'last_edit_time' in o else None
-
-			o['_id'] = o['_id']['$oid']	
-
+		
+		query = []
+		for k in q.as_pymongo():
+			if 'comments' in k:
+				del k['comments']
+			k['_id'] = str(k['_id'])
+			query.append(k)
+		
 		return jsonify(**{'data':query})
 
 	elif request.method == 'DELETE':
@@ -88,15 +88,17 @@ def add_banner_image(id):
 @blueprint.route('/api/post/<id>', methods=['GET', 'PUT', 'DELETE'])
 @login_required
 def single_post_manage(id):
-	o = Post.objects.get(id=id)
+	o = Post.objects(id=id)
 
 	if request.method == 'GET':
-		o = json.loads(o.to_json())
-		o['create_date'] = o['create_date']['$date']
-		o['_id'] = o['_id']['$oid']	
+		o = o.as_pymongo()[0]
+		o = json.loads(configs.JSONEncoder().encode(o))
+		if 'comments' in o :
+			del o['comments']
 		return jsonify(**{'data':o})
 
 	elif request.method == 'PUT':
+		o = o[0]
 		data = request.json
 		data['last_edit_time'] = datetime.datetime.now() 
 		data['background_image'] = str(o.id)+'/banner'

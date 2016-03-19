@@ -42,6 +42,8 @@ adminApp.controller('adminIndex', ['$scope', '$http', function ($scope, $http) {
 }])
 
 adminApp.controller('postCRUDController',['$scope', '$http', 'Upload', function($scope, $http, Upload){
+	var md = new showdown.Converter()
+	md.setOption('tables', true)
 	$scope.selected = [];
 	$scope.newPost = {};
 	$scope.tagName = '';
@@ -65,7 +67,7 @@ adminApp.controller('postCRUDController',['$scope', '$http', 'Upload', function(
 	$scope.getTags = getTags;
 	$scope.refreshMarkdown = function (text) {
 		$('.preview>*').remove()
-		$('.preview').append(markdown.toHTML(text))
+		$('.preview').append(md.makeHtml(text))
 	}
 
 	$scope.addToSelected = function(tag) {
