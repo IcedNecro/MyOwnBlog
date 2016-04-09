@@ -85,7 +85,6 @@ app.controller('postController', ['$http', '$scope', '$routeParams','social', fu
 		})
 	}
 	$scope.comment = function() {
-
 		social.comment($scope.comment_text, $scope.id);
 	}
 

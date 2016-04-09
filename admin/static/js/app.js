@@ -44,6 +44,7 @@ adminApp.controller('adminIndex', ['$scope', '$http', function ($scope, $http) {
 adminApp.controller('postCRUDController',['$scope', '$http', 'Upload', function($scope, $http, Upload){
 	var md = new showdown.Converter()
 	md.setOption('tables', true)
+	$scope.images = []
 	$scope.selected = [];
 	$scope.newPost = {};
 	$scope.tagName = '';
@@ -81,20 +82,37 @@ adminApp.controller('postCRUDController',['$scope', '$http', 'Upload', function(
 		$scope.newPost.tags.splice(i,1);
 		$scope.notSelected.push(tag);
 	}	
+	$scope.append_to_selected_images = function(file) {
+		$scope.upload(file, {}, function(file) {
+			$scope.images.push(file.name);
+		});
+	}
 
-    $scope.upload = function () {
+	$scope.delete_image = function(file) {
+		var id = $('body').attr('post')
+		
+		$scope.images.splice($scope.images.indexOf(file), 1)
+		$http({
+			url: '/admin/api/post/image/'+id,
+			method:'DELETE',
+			params: {src: file}
+		}).success(function(data) {
+			console.log('file deleted')
+		})
+	}
+
+    $scope.upload = function (file, opts, calback) {
 		var id = $('body').attr('post')
 
         Upload.upload({
             url: '/admin/api/post/image/'+id,
-            data: {file: $scope.file,}
+        	params: opts,
+            data: {file: file,}
         }).then(function (resp) {
             console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
-        }, function (resp) {
-            console.log('Error status: ' + resp.status);
-        }, function (evt) {
-            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-            console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+            if(calback) {
+            	calback(file)
+            }
         });
     };
 
@@ -146,12 +164,12 @@ adminApp.controller('postEditController',['$scope', '$http', '$controller', func
 		var changes = {}
 
 		var id = $('body').attr('post')
-
 		for(var i in $scope.newPost) {
 			if($scope.newPost[i] != $scope.initial[i])
 				changes[i] = $scope.newPost[i]
 		}
 
+		delete changes.images 
 		$http({
 			method:'PUT', 
 			url: '/admin/api/post/'+id,

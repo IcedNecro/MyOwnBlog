@@ -1,10 +1,9 @@
 from flask import *
 from flask.ext.login import login_required
 from post_management.models import Post
-import datetime
-import json
-import os
-import configs  
+import datetime, json, os, configs  
+
+from . import *
 
 blueprint = Blueprint('admin', __name__, 
 	static_folder='static',
@@ -35,9 +34,6 @@ def post_manage():
 		newPost.background_image = newPost.id+'/banner'
 		newPost.save()
 
-		if os.path.exists(os.path.join(configs.settings.UPLOAD_DIRECTORY, str(newPost.id))) == False:
-			os.makedirs(os.path.join(configs.settings.UPLOAD_DIRECTORY, str(newPost.id)))
-
 		return jsonify(**{"status": "ok"})
 	
 	elif request.method == 'GET':
@@ -58,7 +54,6 @@ def post_manage():
 				del k['comments']
 			k['_id'] = str(k['_id'])
 			query.append(k)
-		
 		return jsonify(**{'data':query})
 
 	elif request.method == 'DELETE':
@@ -69,20 +64,26 @@ def post_manage():
 		return jsonify(**{"status": "ok"})
 	# avoid 500 error
 
-@blueprint.route('/api/post/image/<id>', methods=['POST'])
+@blueprint.route('/api/post/image/<id>', methods=['POST', 'DELETE'])
 @login_required
-def add_banner_image(id):
+def upload_image(id):
 	if request.method == 'POST':
 		_file = request.files['file']
-		save_dir = os.path.join(configs.settings.UPLOAD_DIRECTORY, str(id))
 		
-		if os.path.exists(save_dir) == False:
-			os.makedirs(save_dir)
+		# TODO: check for valid file format
+		if 'banner' in request.args:
+			save_fs(_file, 'banner')
+		else:
+			_index = get_num_of_files(id)
+			save_fs(_file, 'image_'+str(_index+1), id)
 
-		# check for valid file format
-		_file.save(os.path.join(save_dir, 'banner'))
-		
 		return jsonify(**{'status':'ok'})
+
+	elif request.method == 'DELETE':
+		_filename = request.args['src']
+		remove_fs(_filename, id)
+		return jsonify(**{'status':'ok'})
+
 	# avoid 500 error
 
 @blueprint.route('/api/post/<id>', methods=['GET', 'PUT', 'DELETE'])
@@ -95,6 +96,9 @@ def single_post_manage(id):
 		o = json.loads(configs.JSONEncoder().encode(o))
 		if 'comments' in o :
 			del o['comments']
+
+		o['images'] = list_images(id)
+
 		return jsonify(**{'data':o})
 
 	elif request.method == 'PUT':
@@ -103,9 +107,6 @@ def single_post_manage(id):
 		data['last_edit_time'] = datetime.datetime.now() 
 		data['background_image'] = str(o.id)+'/banner'
 		o.update(**data)
-
-		if os.path.exists(os.path.join(configs.settings.UPLOAD_DIRECTORY, str(o.id))) == False:
-			os.makedirs(os.path.join(configs.settings.UPLOAD_DIRECTORY, str(o.id)))
 
 		return jsonify(**{'status':'ok'})
 

@@ -32,8 +32,21 @@
 				</div>
 				<div class="row">				
 					<label for='new-post-banner'>Select photo for banner</label>
-					<input ngf-select='upload()' ng-model='file' type='file' id='new-post-banner' value=""/>
+					<input ngf-select='upload(banner_file, {banner: true})' ng-model='banner_file' type='file' id='new-post-banner' value=""/>
 				</div>
+				<label>Upload images to use it in your page</label>
+				{% raw %}
+				<div class="row">
+					<div ng-repeat='im in newPost.images'>
+						<input ng-model='im'/>
+						<button ng-click='delete_image(im)'> Delete</button>
+					</div>
+					<div>
+						<input ngf-select='append_to_selected_images(image)' ng-model='image' type='file' value=""/>
+					</div>
+				</div>
+				{% endraw %}
+
 				<div class="row">				
 					<label for='new-post-tags'>Select tags</label>
 					<input ng-model='tagName' ng-change='getTags()' id='new-post-tags'/>
