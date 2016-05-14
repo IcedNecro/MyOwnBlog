@@ -1,5 +1,6 @@
 flask
 flask-security
+git+https://github.com/IcedNecro/mongoengine@IcedNecro-populate
 flask-mongoengine
 flask-wtf
 flask-bower

@@ -142,9 +142,10 @@ body {
 }
 
 .blogpost-image:hover {
-  	transition: 0.2s all;
+	transition: 0.2s all;
 	transform: scale(1.33);
 }
+
 .blogpost-tag-field {
 	z-index: 15;
 	top: 35px;

@@ -45,13 +45,14 @@ def get_posts():
 		o['last_edit_time'] = o['last_edit_time']['$date'] if 'last_edit_time' in o else None
 
 		o['_id'] = o['_id']['$oid']	
-
+ 
 	return jsonify(**{'data':query})
 
 @blueprint.route('/api/post/<id>')
 def get_post(id):
 	o = Post.objects.get(id=id)
-	o = json.loads(o.to_json())
+
+	o = json.loads(o.to_json(populate='comments.author'))
 	o['create_date'] = o['create_date']['$date']
 	o['_id'] = o['_id']['$oid']	
 	return jsonify(**{'data':o})

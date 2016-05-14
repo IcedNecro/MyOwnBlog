@@ -69,7 +69,7 @@ app.controller('indexController', ['$http', '$scope','$location',  function($htt
 }])
 
 app.controller('postController', ['$http', '$scope', '$routeParams','social', function($http,$scope, $routeParams, social) {
-	var md = new showdown.Converter()
+	var md = new showdown.Converter({tables:true})
 	md.setOption('tables', true);
 	
 	$scope.getPost = function() {
@@ -82,6 +82,8 @@ app.controller('postController', ['$http', '$scope', '$routeParams','social', fu
 			$('.article-text').append(md.makeHtml(data.data.text))
 			$scope.id = id
 			$scope.post = data.data;
+			$scope.post.create_date = new Date($scope.post.create_date);
+			 
 		})
 	}
 	$scope.comment = function() {

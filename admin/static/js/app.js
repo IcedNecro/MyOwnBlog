@@ -1,6 +1,5 @@
 var adminApp = angular.module('adminApp',['ngFileUpload']);
 
-
 adminApp.controller('adminIndex', ['$scope', '$http', function ($scope, $http) {
 	
 	$scope.getAvailablePosts = function(fiter_data) {

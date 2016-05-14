@@ -51,3 +51,16 @@ def comment_endpoint(post_id):
 
 		Post.objects(id=post_id).update_one(push__comments=comment)
 		return jsonify(**{'status':'ok'})
+
+@blueprint.route('/like/<post_id>', methods=["POST", 'GET', 'DELETE'])
+@fb_user
+def like_endpoint(post_id):
+	if request.method == 'POST':
+		data = request.json
+		user = get_user()
+
+		like = Like(author=user, post=post)
+		like.save()
+
+		Like.objects(id=post_id).update_one(push__likes=like)
+		return jsonify(**{'status':'ok'})
