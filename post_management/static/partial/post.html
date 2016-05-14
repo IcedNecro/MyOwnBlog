@@ -65,27 +65,15 @@
 			<button ng-click='comment()'>Leave comment</button>
 		</div>
 		<div class="comment-section">
-			<p class="comment-section-header">Comments: 2</p>
-			<div class="comment" >
-				<div class='commentor-photo' style="background-image: url(main/img/photo.jpg)"></div>
+			<p class="comment-section-header">{{ "Comments: " + post.comments.length }} </p>
+			<div class="comment" ng-repeat='comment in post.comments'>
+				<div class='commentor-photo' style="background-image: url({{comment.author.photo}})"></div>
 				<div class="comment-body">
 					<div class="comment-top-line">
-						<div class="commentor-name">Roman Statkevich<span class='comment-soc-network'> via Facebook</span></div>
+						<div class="commentor-name">{{ comment.author.name }}<span class='comment-soc-network'> {{ "via " +comment.author.provider }}</span></div>
 						<div class="comment-date">1 jan 2016</div>
 					</div>
-					<div class="comment-text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</div>
-
-				</div>
-			</div>
-			<div class="comment">
-				<div class='commentor-photo' style="background-image: url(main/img/photo.jpg)"></div>
-				<div class="comment-body">
-					<div class="comment-top-line">
-						<div class="commentor-name">Roman Statkevich<span class='comment-soc-network'> via Facebook</span></div>
-						<div class="comment-date">1 jan 2016</div>
-					</div>
-					<div class="comment-text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</div>
-
+					<div class="comment-text">{{ comment.comment_text }}</div>
 				</div>
 			</div>
 		</div>
