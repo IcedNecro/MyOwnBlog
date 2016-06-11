@@ -5,3 +5,4 @@ flask-mongoengine
 flask-wtf
 flask-bower
 flask-debugtoolbar
+nose

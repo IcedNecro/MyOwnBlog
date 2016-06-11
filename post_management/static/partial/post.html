@@ -30,7 +30,7 @@
 			<div class="engagements-section">
 				Did you like it?
 				<button class="g-plus-signin">G+</button>
-				<button class="fb-signin">Facebook</button>
+				<button class="fb-signin" ng-click='fb_like()'>Facebook</button>
 			</div>
 			<div>
 				<p>Read also:</p>
@@ -68,12 +68,22 @@
 			<p class="comment-section-header">{{ "Comments: " + post.comments.length }} </p>
 			<div class="comment" ng-repeat='comment in post.comments'>
 				<div class='commentor-photo' style="background-image: url({{comment.author.photo}})"></div>
-				<div class="comment-body">
-					<div class="comment-top-line">
-						<div class="commentor-name">{{ comment.author.name }}<span class='comment-soc-network'> {{ "via " +comment.author.provider }}</span></div>
-						<div class="comment-date">1 jan 2016</div>
+				<div class="comment-outer">
+					<div class="comment-body">
+						<div class="comment-top-line">
+							<div class="commentor-name">{{ comment.author.name }}<span class='comment-soc-network'> {{ "via " +comment.author.provider }}</span></div>
+							<div class="comment-date">1 jan 2016</div>
+						</div>
 					</div>
-					<div class="comment-text">{{ comment.comment_text }}</div>
+					<div ng-if='comment.editable !== true' class="comment-text">{{ comment.comment_text }}</div>
+					<div ng-if='comment.editable === true'>
+						<textarea  ng-model='comment.comment_text'></textarea>
+						<button ng-click='saveComment(comment)'>Save</button>
+					</div>
+				</div>
+				<div class="comment-controls" ng-if='comment.authored === true && comment.editable !== true'>
+					<span ng-click='editComment(comment)'>Edit</span>
+					<span ng-click='deleteComment(comment._id.$oid)'>Remove</span>
 				</div>
 			</div>
 		</div>

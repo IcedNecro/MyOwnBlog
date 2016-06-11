@@ -226,6 +226,23 @@ body {
 	color: #dfdfdf;
 	font-size: 10px;
 }
+
+.comment-controls {
+	margin-top: 20px;
+	font-size: 10px;
+	color: #afafaf;
+}
+
+.comment-controls span:hover {
+	font-weight: bold;
+}
+
+.comment-controls span:first-child:after {
+	content: '|';
+	margin-left:10px;
+	margin-right:10px;
+}
+
 .comment {
 	padding-top: 40px;
 	padding-bottom: 40px;

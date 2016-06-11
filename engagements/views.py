@@ -12,6 +12,8 @@ blueprint = Blueprint('social', __name__,
 	template_folder='templates',
 )
 
+# TODO: Issues when invoking token first time
+
 @blueprint.route('/auth/fb')
 def fb_auth():
 	code = request.args['code']
@@ -39,9 +41,10 @@ def fb_auth():
 def validate_fb_auth():
 	return jsonify(**get_user())
 
-@blueprint.route('/comment/<post_id>', methods=["POST", 'GET', 'DELETE'])
+@blueprint.route('/comment/<post_id>', methods=["POST", 'GET', 'DELETE', 'PUT'])
 @fb_user
 def comment_endpoint(post_id):
+
 	if request.method == 'POST':
 		data = request.json
 		user = get_user()
@@ -52,6 +55,16 @@ def comment_endpoint(post_id):
 		Post.objects(id=post_id).update_one(push__comments=comment)
 		return jsonify(**{'status':'ok'})
 
+	if request.method == 'DELETE':
+		comment = Comment.objects(id=post_id).delete()
+		return jsonify(**{'status':'ok'})
+
+	if request.method == 'PUT':
+		comment = Comment.objects(id=post_id).first()
+		comment['comment_text'] = request.json['comment_text']
+		comment.save()
+		return jsonify(**{'status':'ok'})
+
 @blueprint.route('/like/<post_id>', methods=["POST", 'GET', 'DELETE'])
 @fb_user
 def like_endpoint(post_id):
@@ -59,8 +72,11 @@ def like_endpoint(post_id):
 		data = request.json
 		user = get_user()
 
-		like = Like(author=user, post=post)
-		like.save()
+		obj = Like.objects(author=user, post=post_id)
+		if len(obj)==0:
+			like.save()
 
-		Like.objects(id=post_id).update_one(push__likes=like)
-		return jsonify(**{'status':'ok'})
+			Post.objects(id=post_id).update_one(push__likes=like)
+			return jsonify(**{'status':'ok'})
+		else: 
+			obj.delete()

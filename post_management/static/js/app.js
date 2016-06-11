@@ -20,7 +20,8 @@ app.service('social', ['$window', '$q', '$http', function($window, $q, $http) {
 		data = _data;
 		promise.resolve();
 	}
-	var comment = function (text, id) {
+
+	function comment(text, id) {
 		$http({
 			method:'POST',
 			url: '/social/comment/'+id,
@@ -36,6 +37,42 @@ app.service('social', ['$window', '$q', '$http', function($window, $q, $http) {
 				})
 		})
 	}
+
+	function saveComment(id, data, callback) {
+		$http({
+			method:'PUT', 
+			url: '/social/comment/'+id,
+			data: data
+		}).success(function(_data,status) {
+			callback(data);
+		})
+	}
+
+	function deleteComment(id) {
+		$http({
+			method: 'DELETE',
+			url: '/social/comment/'+id,
+		}).success(function() {
+			console.log('deleted');
+		})
+	}
+
+	function like (id) {
+		$http({
+			method:'POST',
+			url: '/social/like/'+id,
+		}).success(function(data, status) {
+			console.log(data)
+			retries = 0;
+		}).error(function(data, status) {
+			if(status == 401 && retries<3)
+				openWindow(function(data) {
+					retries+=1;
+					comment(text, id)
+				})
+		})
+	}
+
 	var openWindow = function(callback) {
 		promise = $q.defer();
 		var v = $window.open('https://www.facebook.com/dialog/oauth?client_id=1653101508290097&redirect_uri=http://localhost:5000/social/auth/fb','','scrollbars=1')
@@ -45,8 +82,11 @@ app.service('social', ['$window', '$q', '$http', function($window, $q, $http) {
 		})
 	}
 	return {
-		comment: comment,
-		openWindow: openWindow
+		like : like,
+		comment : comment,
+		deleteComment: deleteComment,
+		saveComment: saveComment,
+		openWindow : openWindow
 	}
 }])
 
@@ -63,7 +103,6 @@ app.controller('indexController', ['$http', '$scope','$location',  function($htt
 	$scope.redirect = function(id) {
 		$(document).scrollTop(0)
 		$location.url('topic/'+id)
-
 	}
 	$scope.getPosts();
 }])
@@ -83,12 +122,28 @@ app.controller('postController', ['$http', '$scope', '$routeParams','social', fu
 			$scope.id = id
 			$scope.post = data.data;
 			$scope.post.create_date = new Date($scope.post.create_date);
-			 
 		})
 	}
 	$scope.comment = function() {
 		social.comment($scope.comment_text, $scope.id);
 	}
+	
+	$scope.editComment = function(comment) {
+		comment.editable = true;
+	}
 
+	$scope.saveComment = function(comment) {
+		social.saveComment(comment._id.$oid, comment, function(data) {
+			comment.editable = false;
+		});
+	}
+
+	$scope.deleteComment = function(id) {
+		social.deleteComment(id);
+	}
+
+	$scope.fb_like = function() {
+		social.like($scope.id);
+	} 
 	$scope.getPost();
 }])

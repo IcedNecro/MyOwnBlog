@@ -3,6 +3,7 @@ import os
 from flask import *
 from models import *
 import configs
+from engagements.utils import is_authored
 
 blueprint = Blueprint('post', __name__, 
 	static_folder='static',
@@ -39,13 +40,17 @@ def get_posts():
 		filter_by['published'] = False
 
 	q = Post.objects(**filter_by).order_by(order_by)
+	
+	# add query post-processing
 	query = map(lambda o: json.loads(o.to_json()),q)
+
 	for o in query:
 		o['create_date'] = o['create_date']['$date']
 		o['last_edit_time'] = o['last_edit_time']['$date'] if 'last_edit_time' in o else None
-
 		o['_id'] = o['_id']['$oid']	
- 
+ 		o['likes'] = len(o['likes'])
+ 		o['comments'] = len(o['comments'])
+
 	return jsonify(**{'data':query})
 
 @blueprint.route('/api/post/<id>')
@@ -55,4 +60,12 @@ def get_post(id):
 	o = json.loads(o.to_json(populate='comments.author'))
 	o['create_date'] = o['create_date']['$date']
 	o['_id'] = o['_id']['$oid']	
+
+	if(is_authored()):
+		for comment in o['comments']:
+			if comment['author']['_id']['$oid'] == session['user_id']:
+				comment['authored'] = True
+			else:
+				comment['authored'] = False
+
 	return jsonify(**{'data':o})

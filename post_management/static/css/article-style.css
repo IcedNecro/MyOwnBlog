@@ -1,0 +1,11 @@
+.article-text img, .article-text code {
+  width: 100%;
+  overflow-x: auto; }
+.article-text pre {
+  background-color: #FFE;
+  padding: 10px;
+  font-family: "Ubuntu Mono"; }
+.article-text table {
+  width: 100%; }
+
+/*# sourceMappingURL=article-style.css.map */

@@ -12,5 +12,5 @@ class Post(db.Document):
 	last_edit_time   	= db.DateTimeField()
 	tags 			 	= db.ListField()
 	published		 	= db.BooleanField(default=False)
-	likes 				= db.ListField(db.ReferenceField(Like))
-	comments 			= db.ListField(db.ReferenceField(Comment))
+	likes 				= db.ListField(db.ReferenceField(Like, reverse_delete_rule=db.PULL))
+	comments 			= db.ListField(db.ReferenceField(Comment, reverse_delete_rule=db.PULL))

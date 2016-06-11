@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AACC,qCAAQ;EACP,KAAK,EAAE,IAAI;EACX,UAAU,EAAE,IAAI;AAEjB,iBAAG;EACF,gBAAgB,EAAE,IAAI;EACtB,OAAO,EAAE,IAAI;EACb,WAAW,EAAE,aAAa;AAE3B,mBAAK;EACJ,KAAK,EAAE,IAAI",
+"sources": ["../sass/article-style.sass"],
+"names": [],
+"file": "article-style.css"
+}

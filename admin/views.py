@@ -46,7 +46,7 @@ def post_manage():
 			order_by = params['order_by']
 		if 'not_published' in params: 
 			filter_by['published'] = False
-		q = Post.objects(**filter_by).order_by(order_by)
+		q = Post.objects(**filter_by).order_by(order_by).exclude('comments')
 		
 		query = []
 		for k in q.as_pymongo():
